@@ -15,18 +15,16 @@ public class SupraEmpCompanyNotificationRepositoryImpl implements SupraEmpCompan
 	@PersistenceContext
 	private EntityManager entityManager;
 	
-	String M11="SELECT notificationrfnum, title FROM rolemanagement.supra_emp_company_notification "
-			+ "where policyGroup = (select policyGroup from user where userName=':userName') AND  isActive='Y'";
+	String M11="SELECT ecn.notificationrfnum, ecn.title, ecn.docextension FROM supra_emp_company_notification ecn "
+			+ "where ecn.policyGroup = (select u.policyGroup from user u where u.username=:uname) AND  ecn.isActive='Y'";
 	
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object[]> getAnnouncementForUser(String username) {
-		// TODO Auto-generated method stub
 		Query query = entityManager.createNativeQuery(M11);
-		query.setParameter("username", username);
+		query.setParameter("uname", username);
 		List<Object[]>data =  (List<Object[]>) query.getResultList();
-		System.out.println(data);
 		return data;
 	}
 

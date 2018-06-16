@@ -1,41 +1,35 @@
 package com.supra.imanager.bean;
 
+import java.util.List;
+
 public class DashboardQuickLink {
 
+
+	String panelName;
+	private String panelUrl;
+    List<QuickLinkData> quickLinkData;
 	
-	String quickLinkName;
-    String quickLinkId;
-    String quickLinkUrl;
+    
+    public String getPanelName() {
+		return panelName;
+	}
+	public void setPanelName(String panelName) {
+		this.panelName = panelName;
+	}
+	public String getPanelUrl() {
+		return panelUrl;
+	}
+	public void setPanelUrl(String panelUrl) {
+		this.panelUrl = panelUrl;
+	}
+	public List<QuickLinkData> getQuickLinkData() {
+		return quickLinkData;
+	}
+	public void setQuickLinkData(List<QuickLinkData> quickLinkData) {
+		this.quickLinkData = quickLinkData;
+	}
     
     
-	public String getQuickLinkId() {
-		return quickLinkId;
-	}
-
-	public void setQuickLinkId(String quickLinkId) {
-		this.quickLinkId = quickLinkId;
-	}
-
-	public String getQuickLinkName() {
-		return quickLinkName;
-	}
-
-	public void setQuickLinkName(String quickLinkName) {
-		this.quickLinkName = quickLinkName;
-	}
+    
 	
-	public String getQuickLinkUrl() {
-		return quickLinkUrl;
-	}
-
-	public void setQuickLinkUrl(String quickLinkUrl) {
-		this.quickLinkUrl = quickLinkUrl;
-	}
-
-	@Override
-	public String toString() {
-		return "{ quickLinkName:" + quickLinkName + 
-				", quickLinkId:" + quickLinkId + "}";
-	}
-
 }

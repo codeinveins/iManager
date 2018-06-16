@@ -2,8 +2,9 @@ package com.supra.imanager.bean;
 
 public class MenuFunctions {
 	
-	int functionId;
-	String functionName;
+	private int functionId;
+	private String functionName;
+	private String functionUrl;
 	
 	public int getFunctionId() {
 		return functionId;
@@ -17,14 +18,11 @@ public class MenuFunctions {
 	public void setFunctionName(String functionName) {
 		this.functionName = functionName;
 	}
-	
-	@Override
-	public String toString() {
-		return "{functionId:" + functionId + 
-				", functionName:" + functionName + "}";
+	public String getFunctionUrl() {
+		return functionUrl;
 	}
-	
-	
-	
+	public void setFunctionUrl(String functionUrl) {
+		this.functionUrl = functionUrl;
+	}
 
 }

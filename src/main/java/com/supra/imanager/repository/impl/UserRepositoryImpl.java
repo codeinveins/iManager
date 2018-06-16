@@ -36,7 +36,6 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 	
 	@Override
 	public Object[] fetchUserData(String email) {
-		// TODO Auto-generated method stub
 		Query query = entityManager.createNativeQuery(M11);
 		query.setParameter("primaryEmail", email);
 		Object[] data =  (Object[]) query.getSingleResult();

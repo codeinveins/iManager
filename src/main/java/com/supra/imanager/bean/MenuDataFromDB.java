@@ -8,8 +8,16 @@ public class MenuDataFromDB {
 	private String functionName;
 	private int moduleId;
 	private String moduleName;
-	
 
+	public MenuDataFromDB() {}
+
+	public MenuDataFromDB(String username, int functionId, String functionName, int moduleId, String moduleName) {
+		this.username = username;
+		this.functionId = functionId;
+		this.functionName = functionName;
+		this.moduleId = moduleId;
+		this.moduleName = moduleName;
+	}
 	public String getUsername() {
 		return username;
 	}

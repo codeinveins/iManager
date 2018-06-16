@@ -6,8 +6,8 @@ import java.util.List;
 public class Dashboard implements ResponseMarker {
 	
 	List<DashboardPanel>  panellList; 
-    List<DashboardAnnouncement> announcementBean;
-    List<DashboardQuickLink>  quickLinkBean;
+   DashboardAnnouncement announcementBean;
+   DashboardQuickLink  quickLinkBean;
 	
 	public List<DashboardPanel> getPanellList() {
 		return panellList;
@@ -15,27 +15,20 @@ public class Dashboard implements ResponseMarker {
 	public void setPanellList(List<DashboardPanel> panellList) {
 		this.panellList = panellList;
 	}
-	
-	
-	public List<DashboardAnnouncement> getAnnouncementBean() {
+	public DashboardAnnouncement getAnnouncementBean() {
 		return announcementBean;
 	}
-	public void setAnnouncementBean(List<DashboardAnnouncement> announcementBean) {
+	public void setAnnouncementBean(DashboardAnnouncement announcementBean) {
 		this.announcementBean = announcementBean;
 	}
-	public List<DashboardQuickLink> getQuickLinkBean() {
+	public DashboardQuickLink getQuickLinkBean() {
 		return quickLinkBean;
 	}
-	public void setQuickLinkBean(List<DashboardQuickLink> quickLinkBean) {
+	public void setQuickLinkBean(DashboardQuickLink quickLinkBean) {
 		this.quickLinkBean = quickLinkBean;
 	}
+
 	
-	@Override
-	public String toString() {
-		return "{ panellList:" + panellList + ", "
-				+ "announcementBean:" + announcementBean +
-				", quickLinkBean:"+ quickLinkBean + "}";
-	}
 	
 	
 	

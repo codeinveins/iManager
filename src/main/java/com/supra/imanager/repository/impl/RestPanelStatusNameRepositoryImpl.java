@@ -1,6 +1,5 @@
 package com.supra.imanager.repository.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;

@@ -32,9 +32,13 @@ public class RestPanelStatusName implements java.io.Serializable {
 	private String panelName;
 	private String panelCode;
 	
+	
+	
+	
 	public RestPanelStatusName() {
 	}
 
+	
 	public RestPanelStatusName(int id, String panelId, String statusName, String moduleName, String statuscount,
 			String panelName, String panelCode) {
 		this.id = id;
@@ -111,4 +115,8 @@ public class RestPanelStatusName implements java.io.Serializable {
 		this.panelCode = panelCode;
 	}
 
+
+
+		
+	
 }

@@ -2,6 +2,7 @@ package com.supra.imanager.utilities;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.UUID;
 
 
@@ -29,5 +30,16 @@ public class ApplicationUtilities {
 
 		return hash.toString();
 	}
-	
+
+	public static String createActivationRamdomKey() {
+		String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+		SecureRandom rnd = new SecureRandom();
+		StringBuilder sb = new StringBuilder(11);
+		for (int i = 0; i < 11; i++)
+			sb.append(AB.charAt(rnd.nextInt(AB.length())));
+		String temp = new String(sb);
+		return temp;
+	}
+
 }

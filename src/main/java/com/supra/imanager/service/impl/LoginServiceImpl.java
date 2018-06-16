@@ -10,7 +10,7 @@ import com.supra.imanager.bean.LoginInput;
 import com.supra.imanager.bean.LoginResult;
 import com.supra.imanager.bean.Response;
 import com.supra.imanager.dto.RestToken;
-import com.supra.imanager.repository.TokenRepository;
+import com.supra.imanager.repository.RestTokenRepository;
 import com.supra.imanager.repository.UserRepository;
 import com.supra.imanager.service.LoginService;
 import com.supra.imanager.utilities.ApplicationUtilities;
@@ -22,7 +22,7 @@ public class LoginServiceImpl implements LoginService {
 	private UserRepository userRepository;
 	
 	@Autowired
-	private TokenRepository tokenRepository;
+	private RestTokenRepository restTokenRepository;
 	
 	@Value("${app.domainUrl}")
 	private String domainUrl;
@@ -120,14 +120,22 @@ public class LoginServiceImpl implements LoginService {
 		tokenObj.setDeviceName(loginBean.getDeviceType());
 		tokenObj.setUserName(loginBean.getUsername());
 		
-		return tokenRepository.save(tokenObj);
+		return restTokenRepository.save(tokenObj);
 	}
 
 	@Override
 	public void insertIntoLoginHistory(LoginResult loginResult, boolean b) {
 
 	}
-
-
+	
+	@Override
+	public boolean isUserExists(String email) {
+		if(null != userRepository.findByPrimaryemail(email)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 }

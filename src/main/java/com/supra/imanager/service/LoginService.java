@@ -5,7 +5,6 @@ import com.supra.imanager.bean.LoginResult;
 import com.supra.imanager.bean.Response;
 
 public interface LoginService {
-
 	
 	LoginResult isValidUser(LoginInput loginInput, String ipAddress);
 
@@ -13,7 +12,6 @@ public interface LoginService {
 	
 	void prepareLoginReponse(LoginResult loginResult, LoginInput loginInput, Response restResponse);
 
-	
-	
-	
+	boolean isUserExists(String email);
+
 }

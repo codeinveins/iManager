@@ -2,8 +2,6 @@ package com.supra.imanager.bean;
 
 import java.util.List;
 
-import javax.persistence.Transient;
-
 public class DashboardPanel {
 
 	String panelId;
@@ -36,13 +34,5 @@ public class DashboardPanel {
 	public void setPanelUrl(String panelUrl) {
 		this.panelUrl = panelUrl;
 	}
-	
-	@Override
-	public String toString() {
-		return "{ panelId:" + panelId + 
-				", panelName:" + panelName + 
-				", statusList:" + statusList + "}";
-	}
-
 	
 }

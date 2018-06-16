@@ -1,40 +1,41 @@
 package com.supra.imanager.bean;
 
+import java.util.List;
+
 public class DashboardAnnouncement {
 
-	String announcementId;
-  	String announcementName;
-    String viewMore;
-    
-	public String getAnnouncementId() {
-		return announcementId;
+	
+	String panelName;
+	private String panelUrl;
+	List<AnnouncementData> announcementData;
+	
+	public String getPanelName() {
+		return panelName;
 	}
-
-	public void setAnnouncementId(String announcementId) {
-		this.announcementId = announcementId;
+	public void setPanelName(String panelName) {
+		this.panelName = panelName;
 	}
-
-	public String getAnnouncementName() {
-		return announcementName;
+	public String getPanelUrl() {
+		return panelUrl;
 	}
-
-	public void setAnnouncementName(String announcementName) {
-		this.announcementName = announcementName;
+	public void setPanelUrl(String panelUrl) {
+		this.panelUrl = panelUrl;
 	}
-
-	public String getViewMore() {
-		return viewMore;
+	public List<AnnouncementData> getAnnouncementData() {
+		return announcementData;
 	}
-
-	public void setViewMore(String viewMore) {
-		this.viewMore = viewMore;
+	public void setAnnouncementData(List<AnnouncementData> announcementData) {
+		this.announcementData = announcementData;
 	}
+	
+	
+	
 
-	@Override
+	/*@Override
 	public String toString() {
 		return "{ announcementId:" + announcementId + ", announcementName:" + announcementName
 				+ ", viewMore:" + viewMore + "}";
-	}
+	}*/
 
 	
 	

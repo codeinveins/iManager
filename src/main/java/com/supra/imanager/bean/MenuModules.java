@@ -4,9 +4,10 @@ import java.util.List;
 
 public class MenuModules {
 
-	int moduleId;
-	String moduleName;
-	List<MenuFunctions> functionBeans;
+	private int moduleId;
+	private String moduleName;
+	private String moduleUrl;
+	private List<MenuFunctions> functionBeans;
 	
 	public int getModuleId() {
 		return moduleId;
@@ -20,43 +21,16 @@ public class MenuModules {
 	public void setModuleName(String moduleName) {
 		this.moduleName = moduleName;
 	}
+	public String getModuleUrl() {
+		return moduleUrl;
+	}
+	public void setModuleUrl(String moduleUrl) {
+		this.moduleUrl = moduleUrl;
+	}
 	public List<MenuFunctions> getFunctionBeans() {
 		return functionBeans;
 	}
 	public void setFunctionBeans(List<MenuFunctions> functionBeans) {
 		this.functionBeans = functionBeans;
 	}
-	@Override
-	public String toString() {
-		return "{moduleId:" + moduleId + 
-				", moduleName:" + moduleName + 
-				", functionBeans:" + functionBeans + "}";
-	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + moduleId;
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		MenuModules other = (MenuModules) obj;
-		if (moduleId != other.moduleId)
-			return false;
-		return true;
-	}
-	
-	
-	
-	
-	
-	
 }

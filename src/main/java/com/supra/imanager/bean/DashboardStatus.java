@@ -6,6 +6,7 @@ public class DashboardStatus {
 	String statusName;
 	int statusCount;
 	private String statusUrl;
+	private int functionId;
 	
 	
 	public String getStatusName() {
@@ -26,17 +27,13 @@ public class DashboardStatus {
 	public void setStatusUrl(String statusUrl) {
 		this.statusUrl = statusUrl;
 	}
-
-	@Override
-	public String toString() {
-		return "{ statusName:" + statusName + 
-				", statusCount:" + statusCount
-				+ "}";
+	public int getFunctionId() {
+		return functionId;
 	}
-	
-	
-	
-	
+	public void setFunctionId(int functionId) {
+		this.functionId = functionId;
+	}
+
 	
 	
 }

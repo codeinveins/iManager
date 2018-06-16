@@ -13,9 +13,9 @@ public interface DashboardService {
 
 	List<RestPanelStatusName> getUserAllowedPanelsWithStatus(String username);
 
-	List<DashboardQuickLink> getQuickLink(String username);
+	DashboardQuickLink getQuickLink(String username);
 
-	List<DashboardAnnouncement> getAnnouncements(String username);
+	DashboardAnnouncement getAnnouncements(String username);
 
 	JSONArray fetchUserOwnItemCount(String username);
 
