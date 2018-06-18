@@ -228,7 +228,6 @@ public class LeaveServiceImpl implements LeaveService{
 		AppliedLeaveDetails appliedLeaveDetails= new AppliedLeaveDetails();
 		
 		List<String> leaveStatuses = new ArrayList<>();
-		
 		leaveStatuses.add("Approval Pending");
 		leaveStatuses.add("Approved");
 		leaveStatuses.add("Rejected");
@@ -247,25 +246,24 @@ public class LeaveServiceImpl implements LeaveService{
 			SupraLeaveRequest supraLeaveRequest = (SupraLeaveRequest) iterator.next();
 			
 			LeaveDetails leaveDetailsobj = new LeaveDetails();
-			leaveDetailsobj.setRequestNumber(String.valueOf(trackLeavelistdb.get(0)));
-			leaveDetailsobj.setCreatedOn(trackLeavelistdb.get(4));
-			leaveDetailsobj.setLeaveDays(Float.valueOf(String.valueOf(trackLeavelistdb.get(1))));
-			leaveDetailsobj.setStatus(String.valueOf(trackLeavelistdb.get(7)));
-			leaveDetailsobj.setRemarkApprover(String.valueOf(trackLeavelistdb.get(5)));
-			leaveDetailsobj.setLastModifiedBy(String.valueOf(trackLeavelistdb.get(8)));
+			leaveDetailsobj.setRequestNumber(String.valueOf(supraLeaveRequest.getId().getRequestnumber()));
+			leaveDetailsobj.setCreatedOn(supraLeaveRequest.getId().getCreatedon());
+			leaveDetailsobj.setLeaveDays(Float.valueOf(String.valueOf(supraLeaveRequest.getId().getTotaldays())));
+			leaveDetailsobj.setStatus(String.valueOf(supraLeaveRequest.getId().getStatus()));
+			leaveDetailsobj.setRemarkApprover(String.valueOf(supraLeaveRequest.getId().getApproverRemark()));
+			leaveDetailsobj.setLastModifiedBy(String.valueOf(supraLeaveRequest.getId().getLastmodifiedby()));
 			
 		while (iterator2.hasNext()) {
 		    
-			SupraLeaveRequestMapping supraLeaveRequest = (SupraLeaveRequestMapping) iterator2.next();
-			Iterator iterator3 =  (Iterator) iterator2.next();
+			SupraLeaveRequestMapping supraLeaveRequestMapping = (SupraLeaveRequestMapping) iterator2.next();
 			
 			AppliedLeaveDetails appliedLeaveDetailsobj = new AppliedLeaveDetails();
-		    appliedLeaveDetailsobj.setStartDate("");
-            appliedLeaveDetailsobj.setEndDate("");
-            appliedLeaveDetailsobj.setDays(Float.valueOf(String.valueOf(4)));
-            appliedLeaveDetailsobj.setFullOrHalfDay("Full Day");
-            appliedLeaveDetailsobj.setLeaveType("PL");
-            appliedLeaveDetailsobj.setPurpose("bjn");
+		    appliedLeaveDetailsobj.setStartDate(supraLeaveRequestMapping.getId().getStartdate());
+            appliedLeaveDetailsobj.setEndDate(supraLeaveRequestMapping.getId().getEnddate());
+            appliedLeaveDetailsobj.setDays(Float.valueOf(String.valueOf(supraLeaveRequestMapping.getId().getNoofdays())));
+            appliedLeaveDetailsobj.setFullOrHalfDay(supraLeaveRequestMapping.getId().getFulldayflag());
+            appliedLeaveDetailsobj.setLeaveType(supraLeaveRequestMapping.getId().getLeavecode());
+            appliedLeaveDetailsobj.setPurpose(supraLeaveRequestMapping.getId().getPurpose());
         
             appliedLeaveDetailslist.add(appliedLeaveDetailsobj);
 		}
