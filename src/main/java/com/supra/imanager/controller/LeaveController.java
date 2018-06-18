@@ -3,6 +3,7 @@ package com.supra.imanager.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -102,6 +103,8 @@ public class LeaveController {
 		return ResponseEntity.ok().body(restResponse);
 	}
 
+	
+	
 	@GetMapping(value = "/v1/trackLeave")
 	public ResponseEntity trackLeave(HttpServletRequest request, HttpSession session,
 			@RequestParam(value = "whome", required = true) String whome) {
@@ -115,15 +118,30 @@ public class LeaveController {
 
 	@PostMapping(value = "/v1/approveOrReject")
 	public ResponseEntity acceptOrReject(HttpServletRequest request, HttpSession session,
-			@RequestBody LeaveApprovedOrRejected leaveApprovedOrRejected) {
-
+			@RequestParam(value="reqNumber", required=true)String reqNumber,
+			@RequestParam(value="approveFlag", required=true)String approveFlag,
+			@RequestParam(value="remark", required=true)String remark)
+ {
+		
+		JSONArray jsonarr = new JSONArray();
+		int statusString;
+		//System.out.println(reqNumber+approveFlag+reqStatus+remark);
+		try{
+			statusString = leaveService.updateLMSRemarkAndStatus(reqNumber,approveFlag,"Pending",remark);
+			jsonarr.put(statusString);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		//return jsonarr.toString();
+		
+/*
 		LeaveApprovedOrRejected leaveApprovedOrRejected1 = new LeaveApprovedOrRejected();
 		
 		leaveApprovedOrRejected1.getApproveFlag();
 		leaveApprovedOrRejected1.getRemarks();
 		leaveApprovedOrRejected1.getRequestNumber();
 		
-		
+		*/
 		
 		Response restResponse = new Response();
 		restResponse.setResponseCode(HttpStatus.OK.value());

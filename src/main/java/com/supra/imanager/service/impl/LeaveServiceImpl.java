@@ -34,6 +34,9 @@ public class LeaveServiceImpl implements LeaveService{
 	private SupraLeaveUserBalanceRepository supraLeaveUserBalanceRepository;
 	
 	
+	
+	
+	
 	@Override
 	public LeaveSummary leaveBalance(String email) throws Exception {
 		LeaveSummary leaveSummary = null;
@@ -96,8 +99,16 @@ public class LeaveServiceImpl implements LeaveService{
 	}
 
 
+	@Override
+	public int updateLMSRemarkAndStatus(String reqNumber, String approveFlag, String pendingstatus, String remark) {
+		// TODO Auto-generated method stub
+
+		return supraLeaveRequestRepository.updateLMSRemarkAndStatus( reqNumber,approveFlag,  pendingstatus,  remark);
+	}
 
 
+
+	
 
 
 
