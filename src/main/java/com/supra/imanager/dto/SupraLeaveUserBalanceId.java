@@ -11,6 +11,10 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class SupraLeaveUserBalanceId implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6026667465712427258L;
 	private String username;
 	private String leavebandid;
 	private Long leavecode;

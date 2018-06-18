@@ -11,6 +11,10 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class SupraLeaveRequestId implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3606695986877758330L;
 	private String requestnumber;
 	private String totaldays;
 	private String username;

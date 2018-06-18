@@ -3,10 +3,18 @@ package com.supra.imanager.utilities;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 
 public class ApplicationUtilities {
+
+	public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	public static String generateToken() {
 		return UUID.randomUUID().toString();
@@ -41,5 +49,40 @@ public class ApplicationUtilities {
 		String temp = new String(sb);
 		return temp;
 	}
+	
+	public static String getCurrentDateInString() {
+		return dateFormat.format(new Date());
+	}
+	
+	public static Date getCurrentDate(Date date) throws ParseException {
+		Date dateToReturn = null;
+		if(null != date) {
+			dateToReturn = dateFormat.parse(dateFormat.format(date));
+		}
+		else {
+			dateToReturn = dateFormat.parse(dateFormat.format(new Date()));
+		}
+		
+		return dateToReturn;
+	}
 
+	public static String getCurrentYear() {
+		Calendar now = Calendar.getInstance();  
+		int currYear = now.get(Calendar.YEAR);
+		return String.valueOf(currYear);
+	}
+	
+	public static double getTotalDays(Date startDate, Date endDate, String fullOrHalfDay) throws ParseException {
+		double totalDays = 0;
+		Date startDateCalculated = getCurrentDate(startDate);
+	    Date endDateCalculated = getCurrentDate(endDate);
+	    long diff = endDateCalculated.getTime() - startDateCalculated.getTime();
+		long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 1;
+		if(!(fullOrHalfDay.equalsIgnoreCase("Full Day")))
+	    	totalDays = totalDays + 0.5 *((double) days);
+	    else
+	    	totalDays = totalDays + (double) days;
+		
+		return totalDays;
+	}
 }

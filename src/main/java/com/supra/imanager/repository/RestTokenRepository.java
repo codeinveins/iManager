@@ -13,5 +13,4 @@ public interface RestTokenRepository extends JpaRepository<RestToken, Integer> {
 	@Transactional
     public void deleteByUserName(String userName);
 
-	
 }

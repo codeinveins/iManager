@@ -2,10 +2,15 @@ package com.supra.imanager.bean;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class AppliedLeaveDetails {
 
 	private String leaveType = "PL";
+	
+	@DateTimeFormat(iso=DateTimeFormat.ISO.DATE, pattern="yyyy-MM-dd")
 	private Date startDate = new Date();
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date endDate = new Date();
 	private String fullOrHalfDay = "Full Day";
 	private Float days = new Float(1.5);

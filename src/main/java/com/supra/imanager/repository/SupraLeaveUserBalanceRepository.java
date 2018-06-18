@@ -1,10 +1,13 @@
 package com.supra.imanager.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
-import com.supra.imanager.dto.SupraLeaveType;
+import org.springframework.data.repository.CrudRepository;
+
 import com.supra.imanager.dto.SupraLeaveUserBalance;
+import com.supra.imanager.dto.SupraLeaveUserBalanceId;
 
-public interface SupraLeaveUserBalanceRepository extends JpaRepository<SupraLeaveUserBalance, Integer>, SupraLeaveUserBalanceRepositoryCustom {
+public interface SupraLeaveUserBalanceRepository extends CrudRepository<SupraLeaveUserBalance, SupraLeaveUserBalanceId>, SupraLeaveUserBalanceRepositoryCustom {
 
+	public List<SupraLeaveUserBalance> findByIdUsername(String username);
 }

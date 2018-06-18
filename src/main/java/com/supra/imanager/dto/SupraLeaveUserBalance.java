@@ -17,6 +17,10 @@ import javax.persistence.UniqueConstraint;
 		"username", "leavecode", "leaveyear" }))
 public class SupraLeaveUserBalance implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9056448168714266522L;
 	private SupraLeaveUserBalanceId id;
 
 	public SupraLeaveUserBalance() {
@@ -27,7 +31,6 @@ public class SupraLeaveUserBalance implements java.io.Serializable {
 	}
 
 	@EmbeddedId
-
 	@AttributeOverrides({ @AttributeOverride(name = "username", column = @Column(name = "username", length = 50)),
 			@AttributeOverride(name = "leavebandid", column = @Column(name = "leavebandid", length = 50)),
 			@AttributeOverride(name = "leavecode", column = @Column(name = "leavecode")),

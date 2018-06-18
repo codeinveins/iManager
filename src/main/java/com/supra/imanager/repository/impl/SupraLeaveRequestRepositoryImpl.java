@@ -1,10 +1,9 @@
 package com.supra.imanager.repository.impl;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import com.supra.imanager.repository.SupraLeaveRequestRepositoryCustom;
 
@@ -13,11 +12,10 @@ public class SupraLeaveRequestRepositoryImpl implements SupraLeaveRequestReposit
 	@PersistenceContext
 	private EntityManager entityManager;
 	
-	String M11="select RequestNumber from supra_leave_request where username=:uname order by requestnumber desc limit 1";
+	private String M11="select RequestNumber from supra_leave_request where username=:uname order by lastmodifiedon desc limit 1";
 	
-	String M12 ="update supra_leave_request set approverremark=:remark where requestnumber=:reqnumber";
-	//status=:status,
-   @SuppressWarnings("unchecked")
+	private String M12 ="update supra_leave_request set approverremark=:remark where requestnumber=:reqnumber";
+   
 	@Override
 	public String getRequestNumber(String username) {
 		Query query = entityManager.createNativeQuery(M11);
@@ -25,10 +23,9 @@ public class SupraLeaveRequestRepositoryImpl implements SupraLeaveRequestReposit
 		return  (String) query.getSingleResult();
 	}
 
-
-@Override
+	@Transactional
+	@Override
 	public int updateLMSRemarkAndStatus(String reqNumber, String approveFlag, String pendingstatus, String remark) {
-		// TODO Auto-generated method stub
 		Query query = entityManager.createNativeQuery(M12);
 		query.setParameter("reqNumber", "LEAVESITS160-0008");
 		query.setParameter("approveFlag", approveFlag);

@@ -43,7 +43,7 @@ public class LoginServiceImpl implements LoginService {
 
 				if (finalHashedPassword.equals(data[9])) {
 					String token = ApplicationUtilities.generateToken();
-					if (null != saveToken(token, loginInput, loginResult).getIdrestToken()) {
+					if (null != saveToken(token, loginInput, loginResult, String.valueOf(data[0])).getIdrestToken()) {
 					
 						loginResult.setEmpId(String.valueOf(data[0]));
 						loginResult.setEmpName(String.valueOf(data[1]));
@@ -112,13 +112,13 @@ public class LoginServiceImpl implements LoginService {
 		}
 	}
 
-	public RestToken saveToken(String token, LoginInput loginBean, LoginResult loginResult) {
+	public RestToken saveToken(String token, LoginInput loginBean, LoginResult loginResult, String userId) {
 
 		RestToken tokenObj = new RestToken();
 		tokenObj.setToken(token);
 		tokenObj.setDeviceId(loginBean.getDeviceId());
 		tokenObj.setDeviceName(loginBean.getDeviceType());
-		tokenObj.setUserName(loginBean.getUsername());
+		tokenObj.setUserName(userId);
 		
 		return restTokenRepository.save(tokenObj);
 	}

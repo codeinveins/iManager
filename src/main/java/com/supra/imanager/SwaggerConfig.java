@@ -1,4 +1,4 @@
-package com.supra.imanager;
+/*package com.supra.imanager;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ public class SwaggerConfig  extends WebMvcConfigurationSupport {
                 .title("iManager REST API")
                 .description("\"RestFul Apis for Mobile App of IManager\"")
                 .version("1.0.0")
-                .contact(new Contact("Dreksha Chaudhary", "", "dreksha.chaudhary@supraits.com"))
+                .contact(new Contact("Ashish Gupta", "", "dreksha.chaudhary@supraits.com"))
                 .build();
     }
     
@@ -41,4 +41,4 @@ public class SwaggerConfig  extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
-}
+}*/
