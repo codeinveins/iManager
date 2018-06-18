@@ -262,7 +262,11 @@ public class LeaveServiceImpl implements LeaveService{
             appliedLeaveDetailsobj.setEndDate(supraLeaveRequestMapping.getId().getEnddate());
             appliedLeaveDetailsobj.setDays(Float.valueOf(String.valueOf(supraLeaveRequestMapping.getId().getNoofdays())));
             appliedLeaveDetailsobj.setFullOrHalfDay(supraLeaveRequestMapping.getId().getFulldayflag());
-            appliedLeaveDetailsobj.setLeaveType(supraLeaveRequestMapping.getId().getLeavecode());
+            for(String leaveType : ApplicationConstants.LEAVE_CODE_MAP.keySet()) {
+            	if(supraLeaveRequestMapping.getId().getLeavecode().longValue() == ApplicationConstants.LEAVE_CODE_MAP.get(leaveType).longValue()) {
+            		appliedLeaveDetailsobj.setLeaveType(leaveType);
+            	}
+            }
             appliedLeaveDetailsobj.setPurpose(supraLeaveRequestMapping.getId().getPurpose());
         
             appliedLeaveDetailslist.add(appliedLeaveDetailsobj);
