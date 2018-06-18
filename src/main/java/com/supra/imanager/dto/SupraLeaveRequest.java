@@ -17,8 +17,7 @@ public class SupraLeaveRequest implements java.io.Serializable {
 
 	private SupraLeaveRequestId id;
 
-	public SupraLeaveRequest() {
-	}
+	
 
 	public SupraLeaveRequest(SupraLeaveRequestId id) {
 		this.id = id;

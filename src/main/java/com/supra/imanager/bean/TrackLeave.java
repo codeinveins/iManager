@@ -7,7 +7,7 @@ public class TrackLeave implements ResponseMarker{
 
 	private List<String> leaveStatuses = new ArrayList<>();
 	private List<LeaveDetails> leaveDetails = new ArrayList<>();
-	
+
 	public TrackLeave() {
 		leaveStatuses.add("Approval Pending");
 		leaveStatuses.add("Approved");

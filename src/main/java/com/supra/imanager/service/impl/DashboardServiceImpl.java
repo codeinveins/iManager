@@ -80,9 +80,7 @@ public class DashboardServiceImpl implements DashboardService {
 		while (iquicklink.hasNext()) {
 			Object[] dashboardQuickLink = (Object[]) iquicklink.next();
 			
-						
 			QuickLinkData quickLinkData = new QuickLinkData();
-			
 			quickLinkData.setQuickLinkId((String) dashboardQuickLink[0]);
 			quickLinkData.setQuickLinkName((String) dashboardQuickLink[1]);
 			quickLinkData.setQuickLinkUrl(domainUrl + "/images/quicklink/"

@@ -3,6 +3,7 @@ package com.supra.imanager.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,6 +26,7 @@ import com.supra.imanager.bean.LeaveSummary;
 import com.supra.imanager.bean.Response;
 import com.supra.imanager.bean.TrackLeave;
 import com.supra.imanager.dto.RestToken;
+import com.supra.imanager.dto.SupraLeaveRequest;
 import com.supra.imanager.repository.RestTokenRepository;
 import com.supra.imanager.service.LeaveService;
 
@@ -67,7 +69,6 @@ public class LeaveController {
 			restResponse.setResponseData(leaveSummary);
 			return new ResponseEntity<>(restResponse, HttpStatus.NOT_FOUND);
 		}
-
 	}
 
 	@GetMapping(value = "/v1/agree")
@@ -128,48 +129,59 @@ public class LeaveController {
 	@GetMapping(value = "/v1/trackLeave")
 	public ResponseEntity trackLeave(HttpServletRequest request, HttpSession session,
 			@RequestParam(value = "whome", required = true) String whome) {
+		
+		String userId = getUsernameFromToken(request);
+		
+		List<TrackLeave> trackLeaves  = leaveService.trackLeave(userId,whome);
+		
 		Response restResponse = new Response();
 		restResponse.setResponseCode(HttpStatus.OK.value());
 		restResponse.setResponseMessage("Success");
 		restResponse.setResponseData(new TrackLeave());
 		return ResponseEntity.ok().body(restResponse);
-
 	}
 
+	
 	@PostMapping(value = "/v1/approveOrReject")
 	public ResponseEntity acceptOrReject(HttpServletRequest request, HttpSession session,
-			@RequestParam(value="reqNumber", required=true)String reqNumber,
+			@RequestParam(value="requsetNumberdata", required=true)String requsetNumberdata,
 			@RequestParam(value="approveFlag", required=true)String approveFlag,
 			@RequestParam(value="remark", required=true)String remark)
  {
 		
+		String userId = getUsernameFromToken(request);
+		
 		JSONArray jsonarr = new JSONArray();
-		int statusString;
-		//System.out.println(reqNumber+approveFlag+reqStatus+remark);
+		int statusString = 0;
 		try{
-			statusString = leaveService.updateLMSRemarkAndStatus(reqNumber,approveFlag,"Pending",remark);
+			statusString = leaveService.updateLMSRemarkAndStatus(requsetNumberdata,approveFlag,"Pending",remark);
 			jsonarr.put(statusString);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		//return jsonarr.toString();
+	
 		
-		/*
-		LeaveApprovedOrRejected leaveApprovedOrRejected1 = new LeaveApprovedOrRejected();
-
-		leaveApprovedOrRejected1.getApproveFlag();
-		leaveApprovedOrRejected1.getRemarks();
-		leaveApprovedOrRejected1.getRequestNumber();
-		
-		*/
-		
+		if(statusString>=1) {
 		Response restResponse = new Response();
 		restResponse.setResponseCode(HttpStatus.OK.value());
 		restResponse.setResponseMessage("Success");
 		restResponse.setResponseData(null);
 		return ResponseEntity.ok().body(restResponse);
+		}
+		else {
+			Response restResponse = new Response();
+			restResponse.setResponseCode(HttpStatus.NOT_FOUND.value());
+			restResponse.setResponseMessage("No Success");
+			restResponse.setResponseData(null);
+			return ResponseEntity.ok().body(restResponse);
+		}
 	}
 
+	
+	
+	
+	
+	
 	private String getUsernameFromToken(HttpServletRequest request) {
 		String accessToken = request.getHeader("token");
 		RestToken restToken = restTokenRepository.findByToken(accessToken);
@@ -177,28 +189,3 @@ public class LeaveController {
 	}
 }
 
-
-/*
- * @GetMapping(value="/v1/approveLeaveOthers") public ResponseEntity
- * approveLeave(HttpServletRequest request, HttpSession session,
- * 
- * @RequestParam(value = "email", required = true) String usermail) { Response
- * restResponse = new Response();
- * restResponse.setResponseCode(HttpStatus.OK.value());
- * restResponse.setResponseMessage("Success"); restResponse.setResponseData(new
- * TrackLeave()); return ResponseEntity.ok().body(restResponse); }
- */
-
-/*
- * @PostMapping(value="/v1/addRemark") public ResponseEntity
- * addRemark(HttpServletRequest request, HttpSession session,
- * 
- * @RequestParam(value = "usermail", required = true) String usermail,
- * 
- * @RequestParam(value = "remark", required = true) String remark) { Response
- * restResponse = new Response();
- * restResponse.setResponseCode(HttpStatus.OK.value());
- * restResponse.setResponseMessage("Success. Remark has been Saved.");
- * restResponse.setResponseData(null); return
- * ResponseEntity.ok().body(restResponse); }
- */

@@ -7,7 +7,7 @@ import com.supra.imanager.dto.SupraLeaveRequest;
 public interface SupraLeaveRequestRepository  extends JpaRepository<SupraLeaveRequest, Integer>, SupraLeaveRequestRepositoryCustom
 {
 
-
+	
 
 
 }

@@ -6,6 +6,6 @@ import com.supra.imanager.dto.SupraLeaveRequestMapping;
 import com.supra.imanager.dto.SupraLeaveRequestMappingId;
 
 public interface SupraLeaveRequestMappingRepository
-		extends JpaRepository<SupraLeaveRequestMapping, SupraLeaveRequestMappingId> {
-
+		extends JpaRepository<SupraLeaveRequestMapping, SupraLeaveRequestMappingId> ,SupraLeaveRequestMappingRepositoryCustom {
+	
 }

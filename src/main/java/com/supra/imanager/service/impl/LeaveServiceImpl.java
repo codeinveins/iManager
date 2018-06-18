@@ -9,13 +9,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import com.supra.imanager.bean.AppliedLeaveDetails;
+import com.supra.imanager.bean.LeaveDetails;
 import com.supra.imanager.bean.LeaveInfo;
 import com.supra.imanager.bean.LeaveInput;
 import com.supra.imanager.bean.LeaveSummary;
+import com.supra.imanager.bean.TrackLeave;
 import com.supra.imanager.dto.SupraLeaveRequest;
 import com.supra.imanager.dto.SupraLeaveRequestId;
 import com.supra.imanager.dto.SupraLeaveRequestMapping;
@@ -33,6 +39,7 @@ import com.supra.imanager.utilities.ApplicationUtilities;
 @Service
 public class LeaveServiceImpl implements LeaveService{
 
+
 	@Autowired
 	private SupraLeaveRequestRepository supraLeaveRequestRepository;
 
@@ -44,6 +51,8 @@ public class LeaveServiceImpl implements LeaveService{
 	
 	@Autowired
 	private SupraLeaveRequestMappingRepository supraLeaveRequestMappingRepository;
+	
+	
 	
 	
 	
@@ -106,10 +115,10 @@ public class LeaveServiceImpl implements LeaveService{
 
 
 	@Override
-	public int updateLMSRemarkAndStatus(String reqNumber, String approveFlag, String pendingstatus, String remark) {
+	public int updateLMSRemarkAndStatus(String requsetNumberdata, String approveFlag, String pendingstatus, String remark) {
 		// TODO Auto-generated method stub
 
-		return supraLeaveRequestRepository.updateLMSRemarkAndStatus( reqNumber,approveFlag,  pendingstatus,  remark);
+		return supraLeaveRequestRepository.updateLMSRemarkAndStatus( requsetNumberdata,approveFlag,  pendingstatus,  remark);
 	}
 
 
@@ -198,6 +207,84 @@ public class LeaveServiceImpl implements LeaveService{
 			}
 		}
 		return resultOfLeaveBalanceupdate;
+	}
+
+
+	@Override
+	public List<TrackLeave> trackLeave(String userId, String whome) {
+		// TODO Auto-generated method stub
+		
+		
+		List<SupraLeaveRequest> list1 =  supraLeaveRequestRepository.findByUsername(userId);
+		List<SupraLeaveRequestMapping> list2 = supraLeaveRequestMappingRepository.findByUsername(userId);
+		
+		List<TrackLeave> trackLeaveslist= new ArrayList<>();
+		TrackLeave trackLeave = new TrackLeave();
+		
+		List<LeaveDetails> leaveDetailslist= new ArrayList<>();
+		LeaveDetails leaveDetails = new LeaveDetails();
+		
+		List<AppliedLeaveDetails> appliedLeaveDetailslist= new ArrayList<>();
+		AppliedLeaveDetails appliedLeaveDetails= new AppliedLeaveDetails();
+		
+		List<String> leaveStatuses = new ArrayList<>();
+		
+		leaveStatuses.add("Approval Pending");
+		leaveStatuses.add("Approved");
+		leaveStatuses.add("Rejected");
+		leaveStatuses.add("Cancelled");
+		leaveStatuses.add("Leave Reversed");
+		
+		trackLeave.setLeaveStatuses(leaveStatuses);
+
+		
+		Iterator iterator = list1.iterator();
+		Iterator iterator2 = list2.iterator();
+		
+	
+		while (iterator.hasNext()) {
+			
+			SupraLeaveRequest supraLeaveRequest = (SupraLeaveRequest) iterator.next();
+			
+			LeaveDetails leaveDetailsobj = new LeaveDetails();
+			leaveDetailsobj.setRequestNumber(String.valueOf(trackLeavelistdb.get(0)));
+			leaveDetailsobj.setCreatedOn(trackLeavelistdb.get(4));
+			leaveDetailsobj.setLeaveDays(Float.valueOf(String.valueOf(trackLeavelistdb.get(1))));
+			leaveDetailsobj.setStatus(String.valueOf(trackLeavelistdb.get(7)));
+			leaveDetailsobj.setRemarkApprover(String.valueOf(trackLeavelistdb.get(5)));
+			leaveDetailsobj.setLastModifiedBy(String.valueOf(trackLeavelistdb.get(8)));
+			
+		while (iterator2.hasNext()) {
+		    
+			SupraLeaveRequestMapping supraLeaveRequest = (SupraLeaveRequestMapping) iterator2.next();
+			Iterator iterator3 =  (Iterator) iterator2.next();
+			
+			AppliedLeaveDetails appliedLeaveDetailsobj = new AppliedLeaveDetails();
+		    appliedLeaveDetailsobj.setStartDate("");
+            appliedLeaveDetailsobj.setEndDate("");
+            appliedLeaveDetailsobj.setDays(Float.valueOf(String.valueOf(4)));
+            appliedLeaveDetailsobj.setFullOrHalfDay("Full Day");
+            appliedLeaveDetailsobj.setLeaveType("PL");
+            appliedLeaveDetailsobj.setPurpose("bjn");
+        
+            appliedLeaveDetailslist.add(appliedLeaveDetailsobj);
+		}
+		
+		    
+        
+            
+            leaveDetailsobj.setAppliedLeaveDetails(appliedLeaveDetailslist);
+            
+			leaveDetailslist.add(leaveDetailsobj);
+			
+			trackLeave.setLeaveDetails(leaveDetailslist);
+		}
+		
+		
+		return trackLeaveslist;
+		
+	
+		
 	}
 
 
