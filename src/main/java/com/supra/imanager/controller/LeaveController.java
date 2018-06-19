@@ -7,7 +7,6 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
@@ -27,11 +26,12 @@ import com.supra.imanager.bean.TrackLeave;
 import com.supra.imanager.dto.RestToken;
 import com.supra.imanager.repository.RestTokenRepository;
 import com.supra.imanager.service.LeaveService;
+import com.supra.imanager.utilities.ApplicationUtilities;
 
 @RestController
 /*@Api(value = "Apis conatining leave related operations", description = " ", produces = "application/json", tags = {
 "Leave Management" })
-*/
+ */
 public class LeaveController {
 
 	@Autowired
@@ -42,11 +42,11 @@ public class LeaveController {
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-	    binder.registerCustomEditor(Date.class, new CustomDateEditor(
-	            dateFormat, false));
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(
+				dateFormat, false));
 	}
-	
+
 	@GetMapping(value = "/v1/leaveBalance")
 	public ResponseEntity<Response> leaveBalance(HttpServletRequest request, HttpSession session) {
 		LeaveSummary leaveSummary = null;
@@ -91,7 +91,7 @@ public class LeaveController {
 				restResponse.setResponseData(null); 
 				return ResponseEntity.ok().body(restResponse);
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			Response restResponse = new Response();
@@ -113,7 +113,7 @@ public class LeaveController {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+
 		Response restResponse = new Response();
 		restResponse.setResponseCode(HttpStatus.OK.value());
 		restResponse.setResponseMessage(resultOfLeaveBalanceUpdate ? "Leave applied successfully." : "Some error occurred whie applying leaves.");
@@ -121,80 +121,69 @@ public class LeaveController {
 		return ResponseEntity.ok().body(restResponse);
 	}
 
-	
-	
-	
-	
-	
-	
-	@SuppressWarnings("rawtypes")
 	@GetMapping(value = "/v1/trackLeave")
-	public ResponseEntity trackLeave(HttpServletRequest request, HttpSession session,
+	public ResponseEntity<Response> trackLeave(HttpServletRequest request, HttpSession session,
 			@RequestParam(value = "whom", required = true) String whom) {
-		
-		
+
 		String userId = getUsernameFromToken(request);
-		
 		TrackLeave trackLeaves  = leaveService.trackLeave(userId,whom);
-		
+
 		if(null !=trackLeaves) {
 			Response restResponse = new Response();
 			restResponse.setResponseCode(HttpStatus.OK.value());
 			restResponse.setResponseMessage("Success");
 			restResponse.setResponseData(trackLeaves);
 			return ResponseEntity.ok().body(restResponse);
-	
 		}
 		else {
 			Response restResponse = new Response();
 			restResponse.setResponseCode(HttpStatus.NOT_FOUND.value());
 			restResponse.setResponseData(null);
 			return new ResponseEntity<>(restResponse, HttpStatus.NOT_FOUND);
-	
 		}
-		
+
 	}
 
-	
 	@PostMapping(value = "/v1/approveOrReject")
-	public ResponseEntity acceptOrReject(HttpServletRequest request, HttpSession session,
-			@RequestParam(value="requsetNumberdata", required=true)String requsetNumberdata,
+	public ResponseEntity<Response> acceptOrReject(HttpServletRequest request, HttpSession session,
+			@RequestParam(value="requestNumberdata", required=true)String requestNumberdata,
 			@RequestParam(value="approveFlag", required=true)String approveFlag,
-			@RequestParam(value="remark", required=true)String remark)
- {
+			@RequestParam(value="remark", required=true)String remark) {
+
+		String approverUserId = getUsernameFromToken(request);
 		
-		String userId = getUsernameFromToken(request);
-		
-		JSONArray jsonarr = new JSONArray();
-		int statusString = 0;
-		try{
-			statusString = leaveService.updateLMSRemarkAndStatus(requsetNumberdata,approveFlag,"Pending",remark);
-			jsonarr.put(statusString);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	
+		int statusString = leaveService.updateLeaveRemarkAndStatus(requestNumberdata, approveFlag, remark, approverUserId, ApplicationUtilities.getCurrentDateInString());
+
 		if(statusString>=0) {
-		Response restResponse = new Response();
-		restResponse.setResponseCode(HttpStatus.OK.value());
-		restResponse.setResponseMessage("Success");
-		restResponse.setResponseData(null);
-		return ResponseEntity.ok().body(restResponse);
+			Response restResponse = new Response();
+			restResponse.setResponseCode(HttpStatus.OK.value());
+			restResponse.setResponseMessage("Leave "+(approveFlag.equalsIgnoreCase("Y") ? "approved" : "rejected")+" successfully");
+			restResponse.setResponseData(null);
+			return ResponseEntity.ok().body(restResponse);
+		}
+		else if(statusString == -1) {
+			Response restResponse = new Response();
+			restResponse.setResponseCode(HttpStatus.UNAUTHORIZED.value());
+			restResponse.setResponseMessage("You are not an approver for this request number.");
+			restResponse.setResponseData(null);
+			return new ResponseEntity<>(restResponse, HttpStatus.UNAUTHORIZED);
+		}
+		else if(statusString == -2) {
+			Response restResponse = new Response();
+			restResponse.setResponseCode(HttpStatus.BAD_REQUEST.value());
+			restResponse.setResponseMessage("Invalid request number.");
+			restResponse.setResponseData(null);
+			return new ResponseEntity<>(restResponse, HttpStatus.BAD_REQUEST);			
 		}
 		else {
 			Response restResponse = new Response();
 			restResponse.setResponseCode(HttpStatus.NOT_FOUND.value());
-			restResponse.setResponseMessage("No Success");
+			restResponse.setResponseMessage("Some error occurred. Please contact system administrator");
 			restResponse.setResponseData(null);
-			return ResponseEntity.ok().body(restResponse);
+			return new ResponseEntity<>(restResponse, HttpStatus.NOT_FOUND);
 		}
 	}
 
-	
-	
-	
-	
-	
 	private String getUsernameFromToken(HttpServletRequest request) {
 		String accessToken = request.getHeader("token");
 		RestToken restToken = restTokenRepository.findByToken(accessToken);

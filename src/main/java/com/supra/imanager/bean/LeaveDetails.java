@@ -1,25 +1,9 @@
 package com.supra.imanager.bean;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class LeaveDetails {
-
-/*	private String requestNumber = "LEAVE112-0006";
-	private Date createdOn = new Date();
-	private Float leaveDays = new Float(1.5);
-	private String status = "Approved";
-	private String remarkApprover = "Approver remarks";
-	private String lastModifiedBy = "80";
-	private List<AppliedLeaveDetails> appliedLeaveDetails = new ArrayList<>();
-	
-	public LeaveDetails() {
-		AppliedLeaveDetails a1 = new AppliedLeaveDetails();
-		AppliedLeaveDetails a2 = new AppliedLeaveDetails();
-		appliedLeaveDetails.add(a1);
-		appliedLeaveDetails.add(a2);
-	}*/
 
 	private String requestNumber ;
 	private Date createdOn ;
@@ -29,7 +13,7 @@ public class LeaveDetails {
 	private String lastModifiedBy ;
 	private List<AppliedLeaveDetails> appliedLeaveDetails ;
 	
-/*	public LeaveDetails() {}*/
+	public LeaveDetails() {}
 	
 	public String getRequestNumber() {
 		return requestNumber;

@@ -22,7 +22,7 @@ public class SupraLeaveRequestMappingRepositoryImpl implements SupraLeaveRequest
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<SupraLeaveRequestMapping> findByOthersId(String userId) {
-		Query query = entityManager.createNativeQuery(M11);
+		Query query = entityManager.createNativeQuery(M11, SupraLeaveRequestMapping.class);
 		query.setParameter("repmanager", userId);
 		List<SupraLeaveRequestMapping> data = query.getResultList();
 		return data;
