@@ -67,7 +67,7 @@ public class LeaveServiceImpl implements LeaveService{
 				throw new Exception("User not found");
 			}
 			else {
-				String requestNum = supraLeaveRequestRepository.getRequestNumber(String.valueOf(username));	
+				String requestNum = supraLeaveRequestRepository.getRequestNumber(username);	
 
 				if(null == requestNum || "".equalsIgnoreCase(requestNum)) {
 					requestNum = "LEAVE"+ username +"-0001";
@@ -211,82 +211,121 @@ public class LeaveServiceImpl implements LeaveService{
 
 
 	@Override
-	public List<TrackLeave> trackLeave(String userId, String whome) {
+	public TrackLeave trackLeave(String userId, String whom) {
 		// TODO Auto-generated method stub
 		
 		
-		List<SupraLeaveRequest> list1 =  supraLeaveRequestRepository.findByUsername(userId);
-		List<SupraLeaveRequestMapping> list2 = supraLeaveRequestMappingRepository.findByUsername(userId);
-		
-		List<TrackLeave> trackLeaveslist= new ArrayList<>();
-		TrackLeave trackLeave = new TrackLeave();
-		
-		List<LeaveDetails> leaveDetailslist= new ArrayList<>();
-		LeaveDetails leaveDetails = new LeaveDetails();
-		
-		List<AppliedLeaveDetails> appliedLeaveDetailslist= new ArrayList<>();
-		AppliedLeaveDetails appliedLeaveDetails= new AppliedLeaveDetails();
-		
-		List<String> leaveStatuses = new ArrayList<>();
-		leaveStatuses.add("Approval Pending");
-		leaveStatuses.add("Approved");
-		leaveStatuses.add("Rejected");
-		leaveStatuses.add("Cancelled");
-		leaveStatuses.add("Leave Reversed");
-		
-		trackLeave.setLeaveStatuses(leaveStatuses);
-
-		
-		Iterator iterator = list1.iterator();
-		Iterator iterator2 = list2.iterator();
-		
-	
-		while (iterator.hasNext()) {
-			
-			SupraLeaveRequest supraLeaveRequest = (SupraLeaveRequest) iterator.next();
-			
-			LeaveDetails leaveDetailsobj = new LeaveDetails();
-			leaveDetailsobj.setRequestNumber(String.valueOf(supraLeaveRequest.getId().getRequestnumber()));
-			leaveDetailsobj.setCreatedOn(supraLeaveRequest.getId().getCreatedon());
-			leaveDetailsobj.setLeaveDays(Float.valueOf(String.valueOf(supraLeaveRequest.getId().getTotaldays())));
-			leaveDetailsobj.setStatus(String.valueOf(supraLeaveRequest.getId().getStatus()));
-			leaveDetailsobj.setRemarkApprover(String.valueOf(supraLeaveRequest.getId().getApproverRemark()));
-			leaveDetailsobj.setLastModifiedBy(String.valueOf(supraLeaveRequest.getId().getLastmodifiedby()));
-			
-		while (iterator2.hasNext()) {
-		    
-			SupraLeaveRequestMapping supraLeaveRequestMapping = (SupraLeaveRequestMapping) iterator2.next();
-			
-			AppliedLeaveDetails appliedLeaveDetailsobj = new AppliedLeaveDetails();
-		    appliedLeaveDetailsobj.setStartDate(supraLeaveRequestMapping.getId().getStartdate());
-            appliedLeaveDetailsobj.setEndDate(supraLeaveRequestMapping.getId().getEnddate());
-            appliedLeaveDetailsobj.setDays(Float.valueOf(String.valueOf(supraLeaveRequestMapping.getId().getNoofdays())));
-            appliedLeaveDetailsobj.setFullOrHalfDay(supraLeaveRequestMapping.getId().getFulldayflag());
-            for(String leaveType : ApplicationConstants.LEAVE_CODE_MAP.keySet()) {
-            	if(supraLeaveRequestMapping.getId().getLeavecode().longValue() == ApplicationConstants.LEAVE_CODE_MAP.get(leaveType).longValue()) {
-            		appliedLeaveDetailsobj.setLeaveType(leaveType);
-            	}
-            }
-            appliedLeaveDetailsobj.setPurpose(supraLeaveRequestMapping.getId().getPurpose());
-        
-            appliedLeaveDetailslist.add(appliedLeaveDetailsobj);
+		if(whom.equals("Self")) {
+			TrackLeave trackLeave = new TrackLeave();
+			List<SupraLeaveRequest> list1 =  supraLeaveRequestRepository.findByIdUsername(userId);
+			List<SupraLeaveRequestMapping> list2 = supraLeaveRequestMappingRepository.findByIdUsername(userId);
+			Iterator<SupraLeaveRequest> iterator = list1.iterator();
+			Iterator<SupraLeaveRequestMapping> iterator2 = list2.iterator();
+			List<LeaveDetails> leaveDetailslist= new ArrayList<>();
+			List<AppliedLeaveDetails> appliedLeaveDetailslist= new ArrayList<>();
+			List<String> leaveStatuses = new ArrayList<>();
+			leaveStatuses.add("Approval Pending");
+			leaveStatuses.add("Approved");
+			leaveStatuses.add("Rejected");
+			leaveStatuses.add("Cancelled");
+			leaveStatuses.add("Leave Reversed");
+			trackLeave.setLeaveStatuses(leaveStatuses);
+			while (iterator.hasNext()) {
+				SupraLeaveRequest supraLeaveRequest = (SupraLeaveRequest) iterator.next();
+				LeaveDetails leaveDetailsobj = new LeaveDetails();
+				leaveDetailsobj.setRequestNumber(String.valueOf(supraLeaveRequest.getId().getRequestnumber()));
+				leaveDetailsobj.setCreatedOn(supraLeaveRequest.getId().getCreatedon());
+				leaveDetailsobj.setLeaveDays(Float.valueOf(String.valueOf(supraLeaveRequest.getId().getTotaldays())));
+				leaveDetailsobj.setStatus(String.valueOf(supraLeaveRequest.getId().getStatus()));
+				leaveDetailsobj.setRemarkApprover(String.valueOf(supraLeaveRequest.getId().getApproverRemark()));
+				leaveDetailsobj.setLastModifiedBy(String.valueOf(supraLeaveRequest.getId().getLastmodifiedby()));
+			while (iterator2.hasNext()) {
+				SupraLeaveRequestMapping supraLeaveRequestMapping = (SupraLeaveRequestMapping) iterator2.next();
+				AppliedLeaveDetails appliedLeaveDetailsobj = new AppliedLeaveDetails();
+			    appliedLeaveDetailsobj.setStartDate(supraLeaveRequestMapping.getId().getStartdate());
+	            appliedLeaveDetailsobj.setEndDate(supraLeaveRequestMapping.getId().getEnddate());
+	            appliedLeaveDetailsobj.setDays(Float.valueOf(String.valueOf(supraLeaveRequestMapping.getId().getNoofdays())));
+	            appliedLeaveDetailsobj.setFullOrHalfDay(supraLeaveRequestMapping.getId().getFulldayflag());
+	            for(String leaveType : ApplicationConstants.LEAVE_CODE_MAP.keySet()) {
+	            	if(supraLeaveRequestMapping.getId().getLeavecode().longValue() == ApplicationConstants.LEAVE_CODE_MAP.get(leaveType).longValue()) {
+	            		appliedLeaveDetailsobj.setLeaveType(leaveType);
+	            	}
+	            }
+	            appliedLeaveDetailsobj.setPurpose(supraLeaveRequestMapping.getId().getPurpose());
+	            appliedLeaveDetailslist.add(appliedLeaveDetailsobj);
+			}
+	            leaveDetailsobj.setAppliedLeaveDetails(appliedLeaveDetailslist);
+				leaveDetailslist.add(leaveDetailsobj);
+				trackLeave.setLeaveDetails(leaveDetailslist);
+			}
+			for (int i = 0; i < leaveDetailslist.size(); i++) {
+				System.out.println(leaveDetailslist.get(i).getLastModifiedBy());
+				System.out.println(leaveDetailslist.get(i).getRemarkApprover());
+				System.out.println(leaveDetailslist.get(i).getRequestNumber());
+				System.out.println(leaveDetailslist.get(i).getStatus());
+				System.out.println(leaveDetailslist.get(i).getAppliedLeaveDetails());
+				System.out.println(leaveDetailslist.get(i).getCreatedOn());
+				System.out.println(leaveDetailslist.get(i).getLeaveDays());
+			}
+			return trackLeave;
 		}
-		
-		    
-        
-            
-            leaveDetailsobj.setAppliedLeaveDetails(appliedLeaveDetailslist);
-            
-			leaveDetailslist.add(leaveDetailsobj);
-			
-			trackLeave.setLeaveDetails(leaveDetailslist);
+		else {
+			TrackLeave trackLeave = new TrackLeave();
+			List<SupraLeaveRequest> list3 =  supraLeaveRequestRepository.findByOthersId(userId);
+			List<SupraLeaveRequestMapping> list4 = supraLeaveRequestMappingRepository.findByOthersId(userId);
+			Iterator<SupraLeaveRequest> iterator = list3.iterator();
+			Iterator<SupraLeaveRequestMapping> iterator2 = list4.iterator();
+			List<LeaveDetails> leaveDetailslist= new ArrayList<>();
+			List<AppliedLeaveDetails> appliedLeaveDetailslist= new ArrayList<>();
+			List<String> leaveStatuses = new ArrayList<>();
+			leaveStatuses.add("Approval Pending");
+			leaveStatuses.add("Approved");
+			leaveStatuses.add("Rejected");
+			leaveStatuses.add("Cancelled");
+			leaveStatuses.add("Leave Reversed");
+			trackLeave.setLeaveStatuses(leaveStatuses);
+			while (iterator.hasNext()) {
+				SupraLeaveRequest supraLeaveRequest = (SupraLeaveRequest) iterator.next();
+				LeaveDetails leaveDetailsobj = new LeaveDetails();
+				leaveDetailsobj.setRequestNumber(String.valueOf(supraLeaveRequest.getId().getRequestnumber()));
+				leaveDetailsobj.setCreatedOn(supraLeaveRequest.getId().getCreatedon());
+				leaveDetailsobj.setLeaveDays(Float.valueOf(String.valueOf(supraLeaveRequest.getId().getTotaldays())));
+				leaveDetailsobj.setStatus(String.valueOf(supraLeaveRequest.getId().getStatus()));
+				leaveDetailsobj.setRemarkApprover(String.valueOf(supraLeaveRequest.getId().getApproverRemark()));
+				leaveDetailsobj.setLastModifiedBy(String.valueOf(supraLeaveRequest.getId().getLastmodifiedby()));
+			while (iterator2.hasNext()) {
+				SupraLeaveRequestMapping supraLeaveRequestMapping = (SupraLeaveRequestMapping) iterator2.next();
+				AppliedLeaveDetails appliedLeaveDetailsobj = new AppliedLeaveDetails();
+			    appliedLeaveDetailsobj.setStartDate(supraLeaveRequestMapping.getId().getStartdate());
+	            appliedLeaveDetailsobj.setEndDate(supraLeaveRequestMapping.getId().getEnddate());
+	            appliedLeaveDetailsobj.setDays(Float.valueOf(String.valueOf(supraLeaveRequestMapping.getId().getNoofdays())));
+	            appliedLeaveDetailsobj.setFullOrHalfDay(supraLeaveRequestMapping.getId().getFulldayflag());
+	            for(String leaveType : ApplicationConstants.LEAVE_CODE_MAP.keySet()) {
+	            	if(supraLeaveRequestMapping.getId().getLeavecode().longValue() == ApplicationConstants.LEAVE_CODE_MAP.get(leaveType).longValue()) {
+	            		appliedLeaveDetailsobj.setLeaveType(leaveType);
+	            	}
+	            }
+	            appliedLeaveDetailsobj.setPurpose(supraLeaveRequestMapping.getId().getPurpose());
+	            appliedLeaveDetailslist.add(appliedLeaveDetailsobj);
+			}
+	            
+	            leaveDetailsobj.setAppliedLeaveDetails(appliedLeaveDetailslist);
+				leaveDetailslist.add(leaveDetailsobj);
+				trackLeave.setLeaveDetails(leaveDetailslist);
+			}
+			for (int i = 0; i < leaveDetailslist.size(); i++) {
+				System.out.println(leaveDetailslist.get(i).getLastModifiedBy());
+				System.out.println(leaveDetailslist.get(i).getRemarkApprover());
+				System.out.println(leaveDetailslist.get(i).getRequestNumber());
+				System.out.println(leaveDetailslist.get(i).getStatus());
+				System.out.println(leaveDetailslist.get(i).getAppliedLeaveDetails());
+				System.out.println(leaveDetailslist.get(i).getCreatedOn());
+				System.out.println(leaveDetailslist.get(i).getLeaveDays());
+			}
+			return trackLeave;
 		}
-		
-		
-		return trackLeaveslist;
-		
 	
-		
+			
 	}
 
 

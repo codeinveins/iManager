@@ -8,5 +8,6 @@ public interface SupraLeaveRequestRepositoryCustom {
 
 	public String getRequestNumber(String username);
 	int updateLMSRemarkAndStatus(String reqNumber, String approveFlag, String pendingstatus, String remark);
-	List<SupraLeaveRequest> findByUsername(String userId);
+	List<SupraLeaveRequest> findByOthersId(String userId);
+	
 }

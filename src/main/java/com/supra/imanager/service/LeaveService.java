@@ -14,5 +14,5 @@ public interface LeaveService {
 	int updateLMSRemarkAndStatus(String reqNumber, String approveFlag, String string, String remark);
 	int changeUserLeaveBalanceUpdationFlag(String userId, String status);
 	boolean createNewLeaveRequest(LeaveInput leaveInput, String username) throws ParseException;
-	List<TrackLeave> trackLeave(String userId, String whome);
+	TrackLeave trackLeave(String userId, String whome);
 }

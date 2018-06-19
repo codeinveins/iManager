@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Dashboard implements ResponseMarker {
 	
-	List<DashboardPanel>  panellList; 
+   List<DashboardPanel>  panellList; 
    DashboardAnnouncement announcementBean;
    DashboardQuickLink  quickLinkBean;
 	

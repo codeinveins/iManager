@@ -15,9 +15,16 @@ import javax.persistence.Table;
 @Table(name = "supra_leave_request")
 public class SupraLeaveRequest implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8004020189519051132L;
 	private SupraLeaveRequestId id;
 
 	
+
+	public SupraLeaveRequest() {
+	}
 
 	public SupraLeaveRequest(SupraLeaveRequestId id) {
 		this.id = id;

@@ -43,7 +43,7 @@ import com.supra.imanager.utilities.ApplicationConstants;
 import io.swagger.annotations.Api;
 
 @RestController
-@Api(value="Apis containing user related operations", description=" ", produces="application/json", tags= {"User Management"})
+//@Api(value="Apis containing user related operations", description=" ", produces="application/json", tags= {"User Management"})
 public class LoginController {
 
 	@Autowired

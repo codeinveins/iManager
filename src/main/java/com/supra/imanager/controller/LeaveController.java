@@ -3,7 +3,6 @@ package com.supra.imanager.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -26,15 +25,13 @@ import com.supra.imanager.bean.LeaveSummary;
 import com.supra.imanager.bean.Response;
 import com.supra.imanager.bean.TrackLeave;
 import com.supra.imanager.dto.RestToken;
-import com.supra.imanager.dto.SupraLeaveRequest;
 import com.supra.imanager.repository.RestTokenRepository;
 import com.supra.imanager.service.LeaveService;
 
-import io.swagger.annotations.Api;
-
 @RestController
-@Api(value = "Apis conatining leave related operations", description = " ", produces = "application/json", tags = {
+/*@Api(value = "Apis conatining leave related operations", description = " ", produces = "application/json", tags = {
 "Leave Management" })
+*/
 public class LeaveController {
 
 	@Autowired
@@ -126,19 +123,36 @@ public class LeaveController {
 
 	
 	
+	
+	
+	
+	
+	@SuppressWarnings("rawtypes")
 	@GetMapping(value = "/v1/trackLeave")
 	public ResponseEntity trackLeave(HttpServletRequest request, HttpSession session,
-			@RequestParam(value = "whome", required = true) String whome) {
+			@RequestParam(value = "whom", required = true) String whom) {
+		
 		
 		String userId = getUsernameFromToken(request);
 		
-		List<TrackLeave> trackLeaves  = leaveService.trackLeave(userId,whome);
+		TrackLeave trackLeaves  = leaveService.trackLeave(userId,whom);
 		
-		Response restResponse = new Response();
-		restResponse.setResponseCode(HttpStatus.OK.value());
-		restResponse.setResponseMessage("Success");
-		restResponse.setResponseData(new TrackLeave());
-		return ResponseEntity.ok().body(restResponse);
+		if(null !=trackLeaves) {
+			Response restResponse = new Response();
+			restResponse.setResponseCode(HttpStatus.OK.value());
+			restResponse.setResponseMessage("Success");
+			restResponse.setResponseData(trackLeaves);
+			return ResponseEntity.ok().body(restResponse);
+	
+		}
+		else {
+			Response restResponse = new Response();
+			restResponse.setResponseCode(HttpStatus.NOT_FOUND.value());
+			restResponse.setResponseData(null);
+			return new ResponseEntity<>(restResponse, HttpStatus.NOT_FOUND);
+	
+		}
+		
 	}
 
 	
@@ -160,8 +174,7 @@ public class LeaveController {
 			e.printStackTrace();
 		}
 	
-		
-		if(statusString>=1) {
+		if(statusString>=0) {
 		Response restResponse = new Response();
 		restResponse.setResponseCode(HttpStatus.OK.value());
 		restResponse.setResponseMessage("Success");

@@ -15,14 +15,15 @@ public class SupraLeaveRequestMappingRepositoryImpl implements SupraLeaveRequest
 	private EntityManager entityManager;
 	
 	
-	private String M11 ="select * from supra_leave_request where username= :uname";
+	
+   private String M11 ="SELECT * FROM supra_leave_request_mapping where username in(select username from user where reportingManager=:repmanager)";
 	
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<SupraLeaveRequestMapping> findByUsername(String userId) {
+	public List<SupraLeaveRequestMapping> findByOthersId(String userId) {
 		Query query = entityManager.createNativeQuery(M11);
-		query.setParameter("uname", userId);
+		query.setParameter("repmanager", userId);
 		List<SupraLeaveRequestMapping> data = query.getResultList();
 		return data;
 	}
